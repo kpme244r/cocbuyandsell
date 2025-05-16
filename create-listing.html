@@ -198,11 +198,8 @@
                             type="submit"
                             class="w-full px-4 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                         >
-                            Get Instant Offer
+                            Submit Listing
                         </button>
-                        <p class="mt-2 text-sm text-gray-500 text-center">
-                            We'll contact you with an offer within 24 hours
-                        </p>
                     </div>
                 </form>
             </div>
@@ -210,78 +207,60 @@
     </div>
 
     <script>
-        // Function to convert file to base64
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        // Handle form submission
         document.getElementById('sellAccountForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Get form data
             const formData = new FormData(this);
-            const imageFiles = formData.getAll('images');
-            const images = [];
             
-            // Convert images to base64
-            for (const file of imageFiles) {
-                if (file.size > 0) {
-                    try {
-                        const base64 = await fileToBase64(file);
-                        images.push(base64);
-                    } catch (error) {
-                        console.error('Error converting image:', error);
-                    }
-                }
+            // Create listing object
+            const listing = {
+                id: Date.now().toString(),
+                title: `TH${formData.get('townHallLevel')} Account`,
+                townHallLevel: parseInt(formData.get('townHallLevel')),
+                description: formData.get('description'),
+                heroLevels: {
+                    barbarianKing: parseInt(formData.get('heroLevels.barbarianKing')) || 0,
+                    archerQueen: parseInt(formData.get('heroLevels.archerQueen')) || 0,
+                    grandWarden: parseInt(formData.get('heroLevels.grandWarden')) || 0,
+                    royalChampion: parseInt(formData.get('heroLevels.royalChampion')) || 0
+                },
+                contactMethod: formData.get('contactMethod'),
+                contactDetails: formData.get('contactDetails'),
+                status: 'available',
+                createdAt: new Date().toISOString()
+            };
+
+            // Handle image upload
+            const imageFile = formData.get('images');
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onloadend = function() {
+                    listing.imageUrl = reader.result;
+                    saveListing(listing);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveListing(listing);
             }
-            
-            // Format message for direct contact
-            const message = `
-New Account Sale Request:
-TH Level: ${formData.get('townHallLevel')}
-
-Hero Levels:
-- Barbarian King: ${formData.get('heroLevels.barbarianKing') || '0'}
-- Archer Queen: ${formData.get('heroLevels.archerQueen') || '0'}
-- Grand Warden: ${formData.get('heroLevels.grandWarden') || '0'}
-- Royal Champion: ${formData.get('heroLevels.royalChampion') || '0'}
-
-Additional Details:
-${formData.get('description')}
-
-Contact Method: ${formData.get('contactMethod')}
-Contact Details: ${formData.get('contactDetails')}
-            `;
-
-            // Redirect based on selected contact method
-            const contactMethod = formData.get('contactMethod');
-            const contactDetails = formData.get('contactDetails');
-            const encodedMessage = encodeURIComponent(message);
-
-            let redirectUrl;
-            switch(contactMethod) {
-                case 'discord':
-                    redirectUrl = 'https://discord.com/users/YOUR_DISCORD_ID'; // Replace with your Discord ID
-                    break;
-                case 'whatsapp':
-                    redirectUrl = `https://wa.me/YOUR_WHATSAPP_NUMBER?text=${encodedMessage}`; // Replace with your WhatsApp number
-                    break;
-                case 'telegram':
-                    redirectUrl = `https://t.me/YOUR_TELEGRAM_USERNAME?text=${encodedMessage}`; // Replace with your Telegram username
-                    break;
-            }
-
-            // Show success message
-            alert('Thank you! Redirecting you to contact us...');
-            
-            // Redirect to messaging platform
-            window.location.href = redirectUrl;
         });
+
+        function saveListing(listing) {
+            // Get existing listings
+            let listings = JSON.parse(localStorage.getItem('listings') || '[]');
+            
+            // Add new listing
+            listings.push(listing);
+            
+            // Save back to localStorage
+            localStorage.setItem('listings', JSON.stringify(listings));
+            
+            // Show success message
+            alert('Your listing has been submitted successfully!');
+            
+            // Redirect to listings page
+            window.location.href = 'listings.html';
+        }
     </script>
 </body>
 </html> 
