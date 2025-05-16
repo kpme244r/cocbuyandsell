@@ -1,0 +1,38 @@
+/* Custom styles */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Fix for file input appearance */
+input[type="file"] {
+    padding: 0.5rem;
+    border: 1px solid #D1D5DB;
+}
+
+/* Custom container width */
+.container {
+    max-width: 1280px;
+}
+
+/* Custom colors */
+.text-primary {
+    color: #2563EB;
+}
+
+.bg-primary {
+    background-color: #2563EB;
+}
+
+.hover\:bg-primary:hover {
+    background-color: #1D4ED8;
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+    .nav-menu {
+        display: none;
+    }
+} 
