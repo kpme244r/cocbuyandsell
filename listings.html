@@ -127,8 +127,8 @@
                 // Try to fetch from listings.json first
                 const response = await fetch('listings.json');
                 if (response.ok) {
-                    const listings = await response.json();
-                    return listings;
+                    const data = await response.json();
+                    return data.listings || [];
                 }
                 
                 // Fallback to localStorage if fetch fails
