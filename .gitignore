@@ -1,0 +1,13 @@
+# Admin files
+admin.html
+admin-login.html
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo 
