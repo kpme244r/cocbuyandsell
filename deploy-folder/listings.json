@@ -1,0 +1,20 @@
+{
+    "listings": [
+        {
+            "id": "listing1",
+            "title": "Max TH15 Account",
+            "description": "Fully maxed Town Hall 15 with max heroes and troops. Perfect for competitive play. Includes max Barbarian King, Archer Queen, Royal Champion, and Grand Warden. All walls maxed.",
+            "townHallLevel": 15,
+            "price": 499.99,
+            "imageUrl": "https://api.clashofclans.com/badges/512/RPqkWvQSCvMH6XPyhcZYKipYL6xgRZvbJYEEcOHVzjE.png",
+            "status": "available",
+            "createdAt": "2024-01-01T00:00:00.000Z",
+            "heroLevels": {
+                "barbarianKing": 90,
+                "archerQueen": 90,
+                "grandWarden": 65,
+                "royalChampion": 40
+            }
+        }
+    ]
+} 
